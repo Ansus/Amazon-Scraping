@@ -1,2 +1,2 @@
-# Amazon-Scraping
-Scraping of Amazon data
+# WebScraping
+Scraping movie data from IMDb.com
