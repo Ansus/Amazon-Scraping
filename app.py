@@ -63,3 +63,4 @@ while response.status_code == 200:
     response = requests.get(active_url)
 
 df = pd.DataFrame(entries)
+df.to_csv("films.csv", encoding="utf-8")
