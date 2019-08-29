@@ -24,6 +24,14 @@ for genre in genres:
         df[genre] = list(map(lambda x, y: x or y, df[genre], found_genre))
     df[genre] = [1 if x else 0 for x in df[genre]]
 
+# ALTERNATIVE
+# for genre in genres:
+#    df[genre] = 0
+#    for col in df.iloc[:,0:3].columns:
+#        genre_found = [1 if x == genre else 0 for x in df[col]]
+#        increased = list(map(lambda x,y: x+y, df[genre], genre_found))
+#        df[genre] = list(map(lambda x: min(x, 1), increased))
+
 # CHECK: sum is <= 3
 #df["sum"] = 0
 # for genre in genres:
@@ -37,10 +45,21 @@ all_genres = ["Music" if x == "Musical" else x for x in all_genres]
 genres.remove("Musical")
 df = df.drop(df.columns[range(3)], axis=1)
 
-# ALTERNATIVE
-# for genre in genres:
-#    df[genre] = 0
-#    for col in df.iloc[:,0:3].columns:
-#        genre_found = [1 if x == genre else 0 for x in df[col]]
-#        increased = list(map(lambda x,y: x+y, df[genre], genre_found))
-#        df[genre] = list(map(lambda x: min(x, 1), increased))
+
+# EXPLORATORY DATA ANALYSIS
+plt.figure(figsize=(15, 8))
+plt.title("Number of movies by category", fontsize=24)
+
+values = list(df.loc[:, genres].sum().values)
+ord_genres = [x for _, x in sorted(zip(values, list(genres)),
+                                   key=lambda pair: pair[0], reverse=True)]
+values.sort(reverse=True)
+ax = sns.barplot(ord_genres, values)
+
+rects = ax.patches
+for rect, label in zip(rects, values):
+    height = rect.get_height()
+    ax.text(rect.get_x() + rect.get_width()/2, height + 1,
+            None, ha='center', va='bottom', fontsize=18)
+plt.xticks(rotation=70)
+plt.tight_layout()
